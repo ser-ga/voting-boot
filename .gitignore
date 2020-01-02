@@ -31,4 +31,5 @@ build/
 .vscode/
 mvnw
 mvnw.cmd
-.mvn
+*.mvn
+*.log
