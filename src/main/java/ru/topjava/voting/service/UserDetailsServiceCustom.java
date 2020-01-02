@@ -21,6 +21,7 @@ public class UserDetailsServiceCustom implements UserDetailsService {
         log.debug("Load user '{}' from database", username);
         User user = userRepository.getByEmail(username);
         if (user == null) {
+            log.debug("Not found user '{}'", username);
             throw new UsernameNotFoundException(username);
         }
         return new AuthorizedUser(user);

@@ -27,7 +27,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public void vote(long restaurantId, String email) {
-        log.info("{} vote for restaurant with id {}", email, restaurantId);
+        log.info("'{}' vote for restaurant with id '{}'", email, restaurantId);
         Vote vote = voteRepository.findByUserEmailAndDate(email, LocalDate.now());
 
         if (vote != null && restaurantId != vote.getRestaurant().getId() && LocalTime.now().isAfter(VoteTime.getTime())) {
@@ -40,7 +40,8 @@ public class VoteServiceImpl implements VoteService {
             vote.setUserEmail(email);
         }
         vote.setRestaurant(restaurant);
-        voteRepository.save(vote);
+        Vote saved = voteRepository.save(vote);
+        log.debug("'{}' was saved successfully", saved);
     }
 
     @Override

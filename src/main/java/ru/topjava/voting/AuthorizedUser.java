@@ -1,10 +1,12 @@
 package ru.topjava.voting;
 
+import lombok.Getter;
 import ru.topjava.voting.model.User;
 
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
     private static final long serialVersionUID = 1L;
 
+    @Getter
     private User user;
 
     public AuthorizedUser(User user) {
@@ -14,14 +16,6 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
 
     public long getId() {
         return user.getId();
-    }
-
-    public void update(User user) {
-        this.user = user;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     @Override

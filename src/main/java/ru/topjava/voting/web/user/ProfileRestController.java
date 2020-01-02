@@ -1,6 +1,7 @@
 package ru.topjava.voting.web.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import static ru.topjava.voting.util.UserUtil.prepareToSave;
 import static ru.topjava.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.topjava.voting.util.ValidationUtil.checkNew;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = ProfileRestController.PROFILE_REST_URL)
@@ -36,6 +38,7 @@ public class ProfileRestController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User get(Authentication authentication) {
+        log.info("Get profile '{}'", authentication.getName());
         AuthorizedUser authorizedUser = (AuthorizedUser) authentication.getPrincipal();
         return authorizedUser.getUser();
     }
@@ -43,6 +46,7 @@ public class ProfileRestController {
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(Authentication authentication) {
+        log.info("Delete profile '{}'", authentication.getName());
         AuthorizedUser authorizedUser = (AuthorizedUser) authentication.getPrincipal();
         userRepository.deleteById(authorizedUser.getId());
     }
@@ -50,6 +54,7 @@ public class ProfileRestController {
     @PostMapping(value = REGISTER, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<User> register(@Valid @RequestBody User user) {
+        log.info("Register profile '{}'", user.getEmail());
         checkNew(user);
         prepareToSave(user, passwordEncoder);
         user.setRoles(Collections.singleton(Role.ROLE_USER));
@@ -64,6 +69,7 @@ public class ProfileRestController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody User user, Authentication authentication) {
+        log.info("Update profile '{}'", authentication.getName());
         AuthorizedUser authorizedUser = (AuthorizedUser) authentication.getPrincipal();
         assureIdConsistent(user, authorizedUser.getId());
         prepareToSave(user, passwordEncoder);

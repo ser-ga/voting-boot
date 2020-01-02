@@ -25,45 +25,57 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Menu create(Menu menu, long restaurantId) {
-        log.debug("Create new menu in restaurant '{}'", restaurantId);
+        log.debug("Create new menu '{}' in restaurant '{}'", menu, restaurantId);
         checkNew(menu);
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
                 () -> new NotFoundException("Not found restaurant with id=" + restaurantId)
         );
         menu.setRestaurant(restaurant);
-        return menuRepository.save(menu);
-
+        Menu saved = menuRepository.save(menu);
+        log.debug("'{}' was saved successfully", saved);
+        return saved;
     }
 
     @Override
     public Menu getById(long id) {
-        log.debug("Get menu by id '{}'", id);
-        return menuRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found menu with id=" + id));
+        log.debug("Load menu '{}' from database", id);
+        Menu menu = menuRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Not found menu with id=" + id));
+        log.debug("'{}' was loaded successfully", menu);
+        return menu;
     }
 
     @Override
     public List<Menu> getBy(long restaurantId, LocalDate date) {
-        log.debug("Get menus in restaurant '{}' by date '{}'", restaurantId, date);
-        if (date == null) return menuRepository.getByRestaurant_Id(restaurantId);
+        log.debug("Load all menus in restaurant '{}' by date '{}' from database", restaurantId, date);
+        if (date == null) {
+            return menuRepository.getByRestaurant_Id(restaurantId);
+        }
         return menuRepository.getByRestaurant_IdAndAdded(restaurantId, date);
     }
 
     @Override
     public Menu update(Menu menu, long restaurantId) {
         log.debug("Update menu '{}' in restaurant '{}'", menu.getId(), restaurantId);
-        menuRepository.findById(menu.getId()).orElseThrow(() -> new NotFoundException("Not found menu with id=" + menu.getId()));
+        menuRepository.findById(menu.getId()).orElseThrow(
+                () -> new NotFoundException("Not found menu with id=" + menu.getId()));
         Restaurant restaurant = restaurantRepository.getOne(restaurantId);
         menu.setRestaurant(restaurant);
-        return  menuRepository.save(menu);
+        Menu updated = menuRepository.save(menu);
+        log.debug("'{}' was updated successfully", updated);
+        return updated;
     }
 
     @Override
     public void delete(long id) {
+        log.debug("Remove menu '{}' from database", id);
         menuRepository.deleteById(id);
+        log.debug("Menu '{}' was removed successfully", id);
     }
 
     @Override
     public List<Menu> getAll() {
+        log.debug("Load all menus from database");
         return menuRepository.getAllByOrderByIdAsc();
     }
 }
