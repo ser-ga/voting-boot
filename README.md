@@ -1,4 +1,4 @@
-# Design and implement a REST API using Hibernate/Spring/SpringMVC without frontend.
+# Design and implement a REST API using SpringBoot 2
 
 #### The task is:
 
