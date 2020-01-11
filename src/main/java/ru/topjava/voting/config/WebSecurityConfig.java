@@ -32,10 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, REGISTER_PROFILE_REST_URL).permitAll()
+                .antMatchers("/console/**", "/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http
+                .headers().frameOptions().disable();
     }
 
 }
