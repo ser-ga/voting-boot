@@ -4,7 +4,6 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.topjava.voting.HasId;
 import ru.topjava.voting.model.Dish;
-import ru.topjava.voting.model.Menu;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -32,9 +31,4 @@ public class MenuTo implements HasId {
         this.restaurantId = restaurantId;
         this.dishes = dishes;
     }
-
-    public static MenuTo fromMenu(Menu menu) {
-        return new MenuTo(menu.getId(), menu.getRestaurant().getId(), menu.getDishes(), menu.getAdded());
-    }
-
 }

@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import ru.topjava.voting.model.*;
 import ru.topjava.voting.to.MenuTo;
+import ru.topjava.voting.util.MenuUtil;
 import ru.topjava.voting.util.VoteTime;
 import ru.topjava.voting.web.json.JacksonObjectMapper;
 
@@ -97,7 +98,7 @@ public class TestData {
 
     public static List<MenuTo> getAllMenuTo() {
         return List.of(MENU1, MENU2, MENU3).stream()
-                .map(MenuTo::fromMenu)
+                .map(MenuUtil::asTo)
                 .collect(Collectors.toList());
     }
 

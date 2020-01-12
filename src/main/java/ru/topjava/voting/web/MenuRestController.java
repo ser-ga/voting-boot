@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.topjava.voting.model.Menu;
 import ru.topjava.voting.service.MenuService;
 import ru.topjava.voting.to.MenuTo;
+import ru.topjava.voting.util.MenuUtil;
 import ru.topjava.voting.util.ValidationUtil;
 
 import javax.annotation.security.RolesAllowed;
@@ -66,7 +67,7 @@ public class MenuRestController {
     public List<MenuTo> getAll() {
         log.info("Get all menus");
         return menuService.getAll().stream()
-                .map(MenuTo::fromMenu)
+                .map(MenuUtil::asTo)
                 .collect(Collectors.toList());
     }
 
