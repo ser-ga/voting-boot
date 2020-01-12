@@ -2,6 +2,8 @@ package ru.topjava.voting.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.topjava.voting.model.Menu;
 import ru.topjava.voting.model.Restaurant;
@@ -24,6 +26,7 @@ public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
 
     @Override
+    @CacheEvict(value = "menus", allEntries = true)
     public Menu create(Menu menu, long restaurantId) {
         log.debug("Create new menu '{}' in restaurant '{}'", menu, restaurantId);
         checkNew(menu);
@@ -37,6 +40,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Cacheable("menus")
     public Menu getById(long id) {
         log.debug("Load menu '{}' from database", id);
         Menu menu = menuRepository.findById(id).orElseThrow(
@@ -46,6 +50,8 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Cacheable(value = "menus",
+            key = "{ #root.methodName, #restaurantId, #date }")
     public List<Menu> getBy(long restaurantId, LocalDate date) {
         log.debug("Load all menus in restaurant '{}' by date '{}' from database", restaurantId, date);
         if (date == null) {
@@ -55,6 +61,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @CacheEvict(value = "menus", allEntries = true)
     public Menu update(Menu menu, long restaurantId) {
         log.debug("Update menu '{}' in restaurant '{}'", menu.getId(), restaurantId);
         menuRepository.findById(menu.getId()).orElseThrow(
@@ -67,6 +74,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @CacheEvict(value = "menus", allEntries = true)
     public void delete(long id) {
         log.debug("Remove menu '{}' from database", id);
         menuRepository.deleteById(id);
@@ -74,6 +82,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Cacheable("menus")
     public List<Menu> getAll() {
         log.debug("Load all menus from database");
         return menuRepository.getAllByOrderByIdAsc();

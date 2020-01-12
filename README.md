@@ -332,7 +332,7 @@ method: `POST`
 
 path: `/rest/menu`
 
-    curl -s -X POST -d '{"name": "Гусли", "city": "Александров", "description": "Ресторан русской кухни"}' -H 'Content-Type:application/json;charset=UTF-8' -H "Authorization: Basic YWRtaW5AeWFuZGV4LnJ1OnBhc3M="  http://{hostname}/rest/menu
+    curl -s -X POST -d '{"restaurantId":10006,"added":"2019-01-01","dishes":[{"name":"Ролл1","price":270.15},{"name":"Ролл2","price":180.55}]}' -H 'Content-Type:application/json;charset=UTF-8' -H "Authorization: Basic YWRtaW5AeWFuZGV4LnJ1OnBhc3M="  http://{hostname}/rest/menu
 
 Request:
 
