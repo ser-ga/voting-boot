@@ -17,7 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <jackson-datatype-hibernate5.version>2.10.1</jackson-datatype-hibernate5.version>
-        <jsoup.version>1.12.1</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
     </properties>
 
     <dependencies>
